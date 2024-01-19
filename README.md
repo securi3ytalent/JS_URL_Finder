@@ -1,5 +1,5 @@
 1. Install the required dependencies by running ===>> 
-npm install axios fs.
+npm install axios fs
 
 2. Run the script using Node.js (node script.js), where script.js is the name of the file containing the code.
 
