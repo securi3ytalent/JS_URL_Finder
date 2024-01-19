@@ -8,7 +8,9 @@ npm install axios fs cheerio readline
 
 
 
-, .html, .css, .js, .json, .png, .jpg, .jpeg, .gif, .svg, .ico, .mp3, .mp4, .ogg, .webm, .pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .ttf, .otf, .woff, .zip, .tar, .gz , .rar, .csv, .xml, .php, .py, .rb, .scss, .sass, .less, .sql, .ini, .txt, .md
+Find the endpoint =>> 
+
+.html, .css, .js, .json, .png, .jpg, .jpeg, .gif, .svg, .ico, .mp3, .mp4, .ogg, .webm, .pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .ttf, .otf, .woff, .zip, .tar, .gz , .rar, .csv, .xml, .php, .py, .rb, .scss, .sass, .less, .sql, .ini, .txt, .md
 
 
 
