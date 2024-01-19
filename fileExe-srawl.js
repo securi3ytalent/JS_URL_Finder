@@ -11,7 +11,7 @@ const rl = readline.createInterface({
 
 function crawl(url) {
   const visitedUrls = new Set();
-  const urlsAndExtensions = [];
+  const urlsAndExamples = {};
 
   async function visit(url) {
     try {
@@ -34,34 +34,55 @@ function crawl(url) {
       });
 
       // Find all script tags and extract the JS file URLs
-      $('script').each((index, element) => {
+      $('script[src]').each((index, element) => {
         const src = $(element).attr('src');
         if (src) {
           const absoluteUrl = resolveAbsoluteUrl(url, src);
           if (isInternalUrl(url, absoluteUrl) && !visitedUrls.has(absoluteUrl)) {
             visitedUrls.add(absoluteUrl);
-            urlsAndExtensions.push({
-              url: absoluteUrl,
-              extension: 'js',
-            });
+            addToExamples('js', absoluteUrl);
           }
         }
       });
 
       // Find all link tags with rel="stylesheet" and extract the CSS file URLs
-      $('link[rel="stylesheet"]').each((index, element) => {
+      $('link[rel="stylesheet"][href]').each((index, element) => {
         const href = $(element).attr('href');
         if (href) {
           const absoluteUrl = resolveAbsoluteUrl(url, href);
           if (isInternalUrl(url, absoluteUrl) && !visitedUrls.has(absoluteUrl)) {
             visitedUrls.add(absoluteUrl);
-            urlsAndExtensions.push({
-              url: absoluteUrl,
-              extension: 'css',
-            });
+            addToExamples('css', absoluteUrl);
           }
         }
       });
+
+      // Additional file types examples
+      addFileTypeExamples($, 'img', 'src', 'png');
+      addFileTypeExamples($, 'img', 'src', 'jpg');
+      addFileTypeExamples($, 'img', 'src', 'jpeg');
+      addFileTypeExamples($, 'img', 'src', 'gif');
+      addFileTypeExamples($, 'img', 'src', 'svg');
+      addFileTypeExamples($, 'img', 'src', 'ico');
+      addFileTypeExamples($, 'audio', 'src', 'mp3');
+      addFileTypeExamples($, 'video', 'src', 'mp4');
+      addFileTypeExamples($, 'source', 'src', 'ogg');
+      addFileTypeExamples($, 'source', 'src', 'webm');
+      addFileTypeExamples($, 'a', 'href', 'pdf');
+      addFileTypeExamples($, 'a', 'href', 'doc');
+      addFileTypeExamples($, 'a', 'href', 'docx');
+      addFileTypeExamples($, 'a', 'href', 'xls');
+      addFileTypeExamples($, 'a', 'href', 'xlsx');
+      addFileTypeExamples($, 'a', 'href', 'ppt');
+      addFileTypeExamples($, 'a', 'href', 'pptx');
+      addFileTypeExamples($, 'link[rel="icon"]', 'href', 'ico');
+      addFileTypeExamples($, 'audio', 'src', 'ogg');
+      addFileTypeExamples($, 'audio', 'src', 'webm');
+      addFileTypeExamples($, 'source', 'src', 'pdf');
+      addFileTypeExamples($, 'source', 'src', 'txt');
+      addFileTypeExamples($, 'source', 'src', 'md');
+      // Add more file types as needed
+
     } catch (error) {
       console.error(`Failed to visit URL: ${url}`);
     }
@@ -87,26 +108,48 @@ function crawl(url) {
     }
   }
 
+  function addToExamples(extension, absoluteUrl) {
+    if (!urlsAndExamples[extension]) {
+      urlsAndExamples[extension] = [];
+    }
+    urlsAndExamples[extension].push(absoluteUrl);
+  }
+
+  function addFileTypeExamples($, tag, attribute, extension) {
+    $(`${tag}[${attribute}]`).each((index, element) => {
+      const fileUrl = $(element).attr(attribute);
+      if (fileUrl) {
+        const absoluteUrl = resolveAbsoluteUrl(url, fileUrl);
+        if (isInternalUrl(url, absoluteUrl) && !visitedUrls.has(absoluteUrl)) {
+          visitedUrls.add(absoluteUrl);
+          addToExamples(extension, absoluteUrl);
+        }
+      }
+    });
+  }
+
   return visit(url)
-    .then(() => urlsAndExtensions)
+    .then(() => urlsAndExamples)
     .catch(error => {
       console.error(error);
-      return [];
+      return {};
     });
 }
 
 rl.question('Enter the website URL: ', (url) => {
   crawl(url)
-    .then(urlsAndExtensions => {
-      const outputFilePath = 'urls_and_extensions.txt';
+    .then(urlsAndExamples => {
+      const outputFilePath = 'urls_and_examples.txt';
 
       const outputStream = fs.createWriteStream(outputFilePath);
       outputStream.once('open', () => {
-        urlsAndExtensions.forEach(({ url, extension }) => {
-          outputStream.write(`${url} - ${extension}\n`);
+        Object.entries(urlsAndExamples).forEach(([extension, urls]) => {
+          urls.forEach((url) => {
+            outputStream.write(`${url} - ${extension}\n`);
+          });
         });
         outputStream.end();
-        console.log(`URLs and extensions saved to ${outputFilePath}`);
+        console.log(`Examples saved to ${outputFilePath}`);
         rl.close();
       });
     })
