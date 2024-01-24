@@ -32,7 +32,7 @@ This is a website extract all URLs scraper built using javascript(nodejs)
 
 3. Enter the website URL when prompted. example
 ```bash
-  http://securitytalent.net
+  https://example.com
 ``` 
 
 Find the endpoint
