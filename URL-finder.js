@@ -75,7 +75,10 @@ function crawl(url) {
 
 console.log('\x1b[33m%s\x1b[0m', 'Author: @Securi3yTalent'); 
 console.log('\x1b[33m%s\x1b[0m', 'join_us: https://t.me/Securi3yTalent'); 
-
+console.cog(`
+  example: node script.js then inter URL (https://example.com)
+  
+`)
 //cyan
 
 
