@@ -12,6 +12,11 @@ This is a website extract all URLs scraper built using javascript(nodejs)
 
 - [@Securi3yTalent](https://twitter.com/Securi3yTalent)
 
+  
+## Haw to use
+
+- [@Securi3yTalent](https://youtu.be/xSxsvUaO4Mk)
+
 
 
 ## Deployment
