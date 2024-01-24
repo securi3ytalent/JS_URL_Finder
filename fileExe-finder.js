@@ -4,6 +4,13 @@ const cheerio = require('cheerio');
 const fs = require('fs');
 const { URL } = require('url');
 
+console.log('\x1b[33m%s\x1b[0m', 'Author: @Securi3yTalent'); 
+console.log('\x1b[33m%s\x1b[0m', 'join_us: https://t.me/Securi3yTalent'); 
+console.cog(`
+  example: node script.js then inter URL (https://example.com)
+  
+`)
+
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
